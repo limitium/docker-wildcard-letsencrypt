@@ -34,21 +34,17 @@ fi
 
 echo "Generating..."
 
-echo "dns_cloudflare_email = $CLOUDFLARE_EMAIL" >> /cloudflare.ini
-echo "dns_cloudflare_api_key = $CLOUDFLARE_API_KEY" >> /cloudflare.ini
+rm -f /etc/letsencrypt/regru.ini
 
-chmod 600 /cloudflare.ini
+echo "certbot_regru:dns_username=$REGRU_EMAIL" >> /etc/letsencrypt/regru.ini
+echo "certbot_regru:dns_password=$REGRU_PASS" >> /etc/letsencrypt/regru.ini
 
-CERTBOT="certbot certonly $ARGS \
-    --agree-tos \
-    --non-interactive \
-    -m $CERTBOT_EMAIL \
-    --manual-public-ip-logging-ok \
-    --dns-cloudflare \
-    --dns-cloudflare-credentials /cloudflare.ini \
-    --server $ACME_SERVER \
-    --expand \
-    $CERTBOT_DOMAINS"
+chmod 600 /etc/letsencrypt/regru.ini
+
+CHECK_TIMEOUT=${CHECK_TIMEOUT:-10000}
+
+
+CERTBOT="certbot certonly $ARGS -vvv --debug --agree-tos --non-interactive -m $CERTBOT_EMAIL --manual-public-ip-logging-ok --certbot-regru:dns-propagation-seconds $CHECK_TIMEOUT --server $ACME_SERVER -a certbot-regru:dns $CERTBOT_DOMAINS"
 
 if [ -n "$SLACK_WEBHOOK" ]
 then

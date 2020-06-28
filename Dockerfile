@@ -1,6 +1,6 @@
 FROM certbot/certbot
 
-LABEL maintainer="k078264@gmail.com"
+LABEL maintainer="limititum@gmail.com"
 
 RUN apk -U upgrade \
     && apk add curl bash \
@@ -8,7 +8,8 @@ RUN apk -U upgrade \
     ca-certificates \
     e2fsprogs \
     docker \
-    && pip install certbot-dns-cloudflare \
+    && pip install --upgrade pip \
+    && pip install certbot-regru \
     && rm -rf /var/cache/apk/*
 
 COPY ./gen-ssl.sh /gen-ssl.sh

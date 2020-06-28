@@ -15,16 +15,18 @@ DIR=`pwd`
 
 ########## Modify THIS SECTION #############
 # MODE="staging"
-CERTBOT_EMAIL="<Email>"
-CLOUDFLARE_EMAIL="<Cloudflare Email>"
-CLOUDFLARE_API_KEY="<Cloudflare global API key>"
+CERTBOT_EMAIL="***@gmail.com"
+REGRU_EMAIL="***@gmail.com"
+REGRU_PASS="***"
+CHECK_TIMEOUT=10000
 ############################################
 
 docker run -it --rm \
     -v "$DIR/ssl:/etc/letsencrypt" \
     -e DOMAIN_NAME=$DOMAIN_NAME \
+    -e REGRU_EMAIL=$REGRU_EMAIL \
+    -e REGRU_PASS=$REGRU_PASS \
     -e CERTBOT_EMAIL=$CERTBOT_EMAIL \
-    -e CLOUDFLARE_API_KEY=$CLOUDFLARE_API_KEY \
-    -e CLOUDFLARE_EMAIL=$CLOUDFLARE_EMAIL \
     -e MODE=$MODE \
-    wildcard-certbot
+    -e CHECK_TIMEOUT=$CHECK_TIMEOUT \
+    wildcard-letsencrypt-regru
